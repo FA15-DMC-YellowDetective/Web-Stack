@@ -13,9 +13,6 @@ import pyorient
 
 from Queue import Queue
 
-from sklearn import preprocessing
-from sklearn import svm
-
 import numpy as np
 
 app = Flask(__name__)
@@ -43,14 +40,14 @@ def index():
 @app.route("/getData/")
 def getData():
 
-	#q.put("starting data query...")
+	q.put("starting data query...")
 
-	#lat1 = str(request.args.get('lat1'))
-	#lng1 = str(request.args.get('lng1'))
-	#lat2 = str(request.args.get('lat2'))
-	#lng2 = str(request.args.get('lng2'))
+	lat1 = str(request.args.get('lat1'))
+	lng1 = str(request.args.get('lng1'))
+	lat2 = str(request.args.get('lat2'))
+	lng2 = str(request.args.get('lng2'))
 
-	#print "received coordinates: [" + lat1 + ", " + lat2 + "], [" + lng1 + ", " + lng2 + "]"
+	print "received coordinates: [" + lat1 + ", " + lat2 + "], [" + lng1 + ", " + lng2 + "]"
 	
 	client = pyorient.OrientDB("localhost", 2480)
 	session_id = client.connect("admin", "admin")
@@ -65,17 +62,17 @@ def getData():
 		print "database [" + db_name + "] does not exist! session ending..."
 		sys.exit()
 
-	#query = 'SELECT FROM Place WHERE lat BETWEEN {} AND {} AND lng BETWEEN {} AND {} AND cat_2 = "Food/Drinks"'
+	query = 'SELECT FROM Place WHERE lat BETWEEN {22.92912} AND {22.927373} AND lng BETWEEN {114.014071} AND {114.016155}"'
 	#this was default to danil's code
 	
-	query = 'SELECT lat, lng, cat_2, title FROM Place WHERE cat_1 = "Outdoors"'
+	#query = 'SELECT lat, lng, cat_2, title FROM Place WHERE cat_1 = "Outdoors"'
 	#possiblly suitable query format?
 	
-	records = client.command(query)
+	#records = client.command(query)
 	
 	#USE INFORMATION RECEIVED FROM CLIENT TO CONTROL	#HOW MANY RECORDS ARE CONSIDERED IN THE ANALYSIS
 
-	#records = client.command(query.format(lat1, lat2, lng1, lng2))
+	records = client.command(query.format(lat1, lat2, lng1, lng2))
 	#this was default to danil's code
 
 	numListings = len(records)
